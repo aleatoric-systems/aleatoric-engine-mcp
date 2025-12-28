@@ -1,0 +1,11 @@
+{
+  "servers": {
+    "aleatoric": {
+      "type": "http",
+      "url": "https://mcp.aleatoric.systems/mcp",
+      "headers": {
+        "X-API-Key": "YOUR_API_KEY_HERE"
+      }
+    }
+  }
+}
