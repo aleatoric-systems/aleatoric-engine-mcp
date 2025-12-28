@@ -1,15 +1,30 @@
+<p align="center">
+  <img src="aleatoric.png" alt="Aleatoric Systems" width="200">
+</p>
+
 # Aleatoric MCP Client
 
 [![MCP Version](https://img.shields.io/badge/MCP-1.0.0-blue)](https://modelcontextprotocol.io)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![GitHub last commit](https://img.shields.io/github/last-commit/aleatoric-systems/aleatoric-engine-mcp)](https://github.com/aleatoric-systems/aleatoric-engine-mcp)
 
 > Official MCP client SDK for [Aleatoric Systems](https://www.aleatoric.systems) — Institutional-grade synthetic market data generation.
+
+**Keywords:** `mcp` `market-data` `synthetic-data` `backtesting` `trading` `fintech` `quantitative-finance` `perpetuals` `futures` `order-book`
 
 ## Overview
 
 Aleatoric MCP provides AI assistants with tools to generate deterministic synthetic market data for backtesting, stress testing, and model validation. Connect your AI coding assistant to generate reproducible datasets across 6 major exchanges.
 
 **Supported Exchanges:** Binance, HyperLiquid, OKX, Bybit, CME, SGX
+
+## Use Cases
+
+- **Backtesting** — Generate months of realistic order book data in seconds
+- **Stress Testing** — Simulate extreme market conditions with reproducible seeds
+- **Model Validation** — Test trading algorithms against deterministic synthetic data
+- **CI/CD Pipelines** — Automated testing with consistent market scenarios
+- **Research** — Explore funding rate dynamics across venues
 
 ## Quick Start
 
@@ -171,7 +186,7 @@ See [examples/](examples/) for more complete examples.
 
 ## API Reference
 
-Full API documentation: [www.aleatoric.systems/docs](https://www.aleatoric.systems)
+Full API documentation: [www.aleatoric.systems](https://www.aleatoric.systems)
 
 ### Endpoints
 
@@ -202,7 +217,7 @@ Start your free trial: [www.aleatoric.systems](https://www.aleatoric.systems)
 ## Support
 
 - Documentation: [www.aleatoric.systems](https://www.aleatoric.systems)
-- Issues: [GitHub Issues](https://github.com/aleatoric-systems/aleatoric-mcp/issues)
+- Issues: [GitHub Issues](https://github.com/aleatoric-systems/aleatoric-engine-mcp/issues)
 - Email: support@aleatoric.systems
 
 ## License
