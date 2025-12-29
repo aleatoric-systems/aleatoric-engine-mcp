@@ -111,7 +111,20 @@ Add via Cline MCP settings:
 ```
 </details>
 
-### 3. Start Using
+### 3. Verify Installation
+
+Test the connection:
+
+```bash
+curl -s -H "X-API-Key: YOUR_KEY" https://mcp.aleatoric.systems/mcp/health
+```
+
+**Expected output:**
+```json
+{"status": "healthy", "version": "0.4.3"}
+```
+
+### 4. Start Using
 
 Ask your AI assistant:
 
