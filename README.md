@@ -19,6 +19,20 @@ Aleatoric MCP provides AI assistants with tools to generate deterministic synthe
 
 **Supported Exchanges:** Binance, HyperLiquid, OKX, Bybit, CME, SGX
 
+## ⚡ 90-Second Demo
+
+**Run this in your AI assistant (Cursor, Claude, Windsurf):**
+
+> "Generate a 1-hour dataset of BTC/USDT L2 order book updates on Binance. Use seed 123 for reproducibility. Plot the mid-price and spread over time."
+
+**What happens:**
+1.  **Agent calls** `validate_config` to lock parameters.
+2.  **Server generates** 3,600s of data (approx 14,000 events) with realistic microstructure.
+3.  **Agent receives** a signed URL or stream of the data.
+4.  **Agent plots** the exact price path defined by `seed=123`.
+
+*Result: A fully reproducible market scenario for your backtest in under 2 minutes.*
+
 ## Use Cases
 
 - **Backtesting** — Generate months of realistic order book data in seconds
@@ -27,15 +41,25 @@ Aleatoric MCP provides AI assistants with tools to generate deterministic synthe
 - **CI/CD Pipelines** — Automated testing with consistent market scenarios
 - **Research** — Explore funding rate dynamics across venues
 
+## Why Deterministic Data?
+
+Random data is useless for engineering. You need:
+
+1.  **Reproducibility:** If a test fails, you must be able to replay the *exact* same market conditions to debug it.
+2.  **Control:** Inject specific anomalies (flash crashes, liquidity voids) to test edge cases that might not happen for years in production.
+3.  **Compliance:** Prove your algorithm handles known adverse scenarios before deploying capital.
+4.  **Speed:** Generate 10 years of tick data in minutes, without expensive subscriptions or rate limits.
+
 ## Quick Start
 
 ### Installation Methods (Friendly)
 - **Zero install** — MCP server is hosted; no local binary to build or run.
 - **Drop-in configs** — ready JSONs in `configs/` for Claude Desktop, Cursor, VS Code Copilot, and Cline; replace `YOUR_API_KEY_HERE` with your key.
-- **Health validation** — confirm connectivity anytime:
+- **Public Discovery** — endpoints for `health` and `manifest` are publicly accessible to allow easy integration with registries like LobeHub.
 
 ```bash
-curl -s -H "X-API-Key: $ALEATORIC_API_KEY" https://mcp.aleatoric.systems/mcp/health
+# Public health check (No API Key required)
+curl -s https://mcp.aleatoric.systems/mcp/health
 ```
 
 ### 1. Get an API Key
@@ -121,17 +145,37 @@ Add via Cline MCP settings:
 ```
 </details>
 
+<details>
+<summary><b>LobeHub (One-Click)</b></summary>
+
+1. Go to **Settings → Agent → Plugin Settings**.
+2. Click **\"Add via JSON\"** and paste:
+
+```json
+{
+  "name": "Aleatoric Engine",
+  "identifier": "aleatoric-engine-mcp",
+  "manifest": "https://mcp.aleatoric.systems/mcp/manifest",
+  "type": "remote",
+  "url": "https://mcp.aleatoric.systems/mcp",
+  "headers": {
+    "X-API-Key": "YOUR_API_KEY_HERE"
+  }
+}
+```
+</details>
+
 ### 3. Verify Installation
 
-Test the connection:
+Test the connection (this endpoint is public for discovery):
 
 ```bash
-curl -s -H "X-API-Key: YOUR_KEY" https://mcp.aleatoric.systems/mcp/health
+curl -s https://mcp.aleatoric.systems/mcp/health
 ```
 
 **Expected output:**
 ```json
-{"status": "healthy", "version": "0.4.3"}
+{"status": "ok", "version": "0.4.4"}
 ```
 
 ### 4. Start Using
@@ -157,6 +201,13 @@ Ask your AI assistant:
 ### Prompts & Resources
 - **Prompts:** Example asks live in `README.md` (see Example Prompts) and can be reused directly in MCP-capable IDEs.
 - **Resources:** The server exposes MCP `resources` for cache inspection/export; attach outputs via `get_cache_stats`, `stream_cache`, or `export_cache` to feed downstream tools.
+
+## Validation Checklist (End-to-End)
+- **Health:** `curl -s -H "X-API-Key: $ALEATORIC_API_KEY" https://mcp.aleatoric.systems/mcp/health` → expect `{ "status": "healthy", "version": "0.4.3" }`.
+- **Manifest:** `python examples/list_presets.py --manifest` → prints server name/version and tool list.
+- **Tool Call:** `python examples/validate_config.py --symbol BTC --seed 42` → expect `Valid! Hash: ...` with normalized config.
+- **Resource Flow:** `python examples/funding_simulation.py --exchange hyperliquid` → exercises tool + resource outputs; for cache endpoints, call `get_cache_stats` then `stream_cache`/`export_cache` (attach resource in your MCP client).
+- **Offline sanity (no network):** `python -m compileall examples` after installing deps to ensure scripts parse.
 
 ## Example Prompts
 

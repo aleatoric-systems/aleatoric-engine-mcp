@@ -1,0 +1,239 @@
+{
+    "mcpVersion": "1.0.0",
+    "server": {
+        "name": "aleatoric-engine",
+        "version": "0.4.4",
+        "description": "Institutional-grade synthetic market data generator and normalizer."
+    },
+    "keywords": [
+        "synthetic data",
+        "order book",
+        "market data",
+        "simulation",
+        "quant"
+    ],
+    "categories": [
+        "finance",
+        "data",
+        "trading"
+    ],
+    "capabilities": {
+        "prompts": {
+            "generate_synthetic_data": {
+                "name": "generate_synthetic_data",
+                "description": "Generate synthetic market data with specific parameters",
+                "arguments": [
+                    {
+                        "name": "symbol",
+                        "description": "The ticker symbol (e.g. BTC)",
+                        "required": true
+                    },
+                    {
+                        "name": "duration",
+                        "description": "Duration of data to generate (e.g. 1h, 1d)",
+                        "required": true
+                    }
+                ]
+            },
+            "simulate_funding": {
+                "name": "simulate_funding",
+                "description": "Simulate funding rates for a specific exchange",
+                "arguments": [
+                    {
+                        "name": "exchange",
+                        "description": "Target exchange (binance, hyperliquid, etc.)",
+                        "required": true
+                    }
+                ]
+            }
+        },
+        "tools": {
+            "validate_config": {
+                "description": "Validate a synthetic market configuration JSON object.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "config": {
+                            "type": "object",
+                            "description": "The SimulationManifest dictionary."
+                        }
+                    },
+                    "required": [
+                        "config"
+                    ]
+                }
+            },
+            "get_presets": {
+                "description": "List available market simulation profiles.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {}
+                }
+            },
+            "normalize_events": {
+                "description": "Normalize raw exchange payloads into canonical Aleatoric format.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "source": {
+                            "type": "string",
+                            "enum": [
+                                "synthetic",
+                                "hyperliquid",
+                                "binance",
+                                "cme",
+                                "sgx"
+                            ]
+                        },
+                        "events": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "payload": {
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        },
+                        "stream": {
+                            "type": "boolean",
+                            "default": false
+                        }
+                    },
+                    "required": [
+                        "source",
+                        "events"
+                    ]
+                }
+            },
+            "simulate_funding_regime": {
+                "description": "Calculate venue-specific funding rates, perp prices, and settlement logic.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "exchange": {
+                            "type": "string",
+                            "enum": [
+                                "binance",
+                                "hyperliquid",
+                                "okx",
+                                "bybit",
+                                "cme",
+                                "sgx"
+                            ]
+                        },
+                        "spot_price": {
+                            "type": "number"
+                        },
+                        "mark_price": {
+                            "type": "number"
+                        },
+                        "position_size": {
+                            "type": "number",
+                            "description": "Optional position size to calc PnL"
+                        },
+                        "num_periods": {
+                            "type": "integer",
+                            "default": 10
+                        }
+                    },
+                    "required": [
+                        "exchange",
+                        "spot_price",
+                        "mark_price"
+                    ]
+                }
+            },
+            "get_cache_stats": {
+                "description": "Get statistics about the local artifact cache.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {}
+                }
+            },
+            "get_config_schema": {
+                "description": "Get the JSON Schema for SimulationManifest configuration.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {}
+                }
+            },
+            "get_cache_manifest": {
+                "description": "Get provenance metadata for a specific cache entry.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "cache_key": {
+                            "type": "string",
+                            "description": "The cache key identifier"
+                        }
+                    },
+                    "required": ["cache_key"]
+                }
+            },
+            "delete_cache": {
+                "description": "Delete a specific cache entry by key.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "cache_key": {
+                            "type": "string",
+                            "description": "The cache key to delete"
+                        }
+                    },
+                    "required": ["cache_key"]
+                }
+            },
+            "stream_cache": {
+                "description": "Stream cached normalized events via SSE.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "cache_key": {
+                            "type": "string",
+                            "description": "The cache key to stream"
+                        }
+                    },
+                    "required": ["cache_key"]
+                }
+            },
+            "export_cache": {
+                "description": "Export a cached dataset as compressed Parquet.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "cache_key": {
+                            "type": "string",
+                            "description": "The cache key to export"
+                        }
+                    },
+                    "required": ["cache_key"]
+                }
+            },
+            "get_venue_details": {
+                "description": "Get details about a specific exchange venue adapter.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "exchange": {
+                            "type": "string",
+                            "enum": ["binance", "hyperliquid", "okx", "bybit", "cme", "sgx"]
+                        }
+                    },
+                    "required": ["exchange"]
+                }
+            }
+        },
+        "resources": {
+            "presets": {
+                "uri": "aleatoric://presets",
+                "description": "List of all registered simulation presets"
+            },
+            "manifest": {
+                "uri": "aleatoric://manifest",
+                "description": "Server capabilities and version info"
+            }
+        }
+    }
+}

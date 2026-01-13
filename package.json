@@ -1,0 +1,33 @@
+{
+  "name": "aleatoric-engine-mcp",
+  "version": "0.4.4",
+  "description": "Institutional-grade synthetic market data generator and normalizer for MCP-compliant AI assistants.",
+  "keywords": [
+    "mcp",
+    "market-data",
+    "synthetic-data",
+    "backtesting",
+    "trading",
+    "fintech",
+    "quantitative-finance",
+    "order-book"
+  ],
+  "homepage": "https://www.aleatoric.systems",
+  "bugs": {
+    "url": "https://github.com/aleatoric-systems/aleatoric-engine-mcp/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aleatoric-systems/aleatoric-engine-mcp.git"
+  },
+  "license": "MIT",
+  "author": "Aleatoric Systems <support@aleatoric.systems>",
+  "main": "mcp.json",
+  "files": [
+    "mcp.json",
+    "configs",
+    "examples",
+    "README.md",
+    "LICENSE"
+  ]
+}

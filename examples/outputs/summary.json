@@ -1,0 +1,10 @@
+{
+  "config_hash": "0d9a74582e103f31",
+  "num_ticks": 10000,
+  "returns_kurtosis": 0.9819485262174128,
+  "returns_skewness": -0.040765689250543406,
+  "avg_spread_bps": 10.0,
+  "bid_correlation": 0.9999104386922311,
+  "ask_correlation": 0.9999105415838994,
+  "circuit_breaker_pct": 0.0
+}

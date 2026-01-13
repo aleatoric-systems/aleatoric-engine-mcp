@@ -1,0 +1,13 @@
+{
+  "symbol": "BTC",
+  "date": "20251201",
+  "historical_records": 17253,
+  "synthetic_records": 17253,
+  "historical_volatility": 60.59055943045336,
+  "synthetic_volatility": 88.83306105374088,
+  "historical_spread_bps": 0.1731781763897127,
+  "synthetic_spread_bps": 0.132271095045385,
+  "ks_test_returns_pvalue": 3.080571156368563e-98,
+  "ks_test_spreads_pvalue": 0.0,
+  "overall_similarity_pct": 43.25666666666666
+}
