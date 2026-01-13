@@ -7,6 +7,7 @@
 [![MCP Version](https://img.shields.io/badge/MCP-1.0.0-blue)](https://modelcontextprotocol.io)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![GitHub last commit](https://img.shields.io/github/last-commit/aleatoric-systems/aleatoric-engine-mcp)](https://github.com/aleatoric-systems/aleatoric-engine-mcp)
+[![MCP Badge](https://lobehub.com/badge/mcp/aleatoric-systems-aleatoric-engine-mcp?style=for-the-badge)](https://lobehub.com/mcp/aleatoric-systems-aleatoric-engine-mcp)
 
 > Official MCP client SDK for [Aleatoric Systems](https://www.aleatoric.systems) — Institutional-grade synthetic market data generation.
 
@@ -27,6 +28,15 @@ Aleatoric MCP provides AI assistants with tools to generate deterministic synthe
 - **Research** — Explore funding rate dynamics across venues
 
 ## Quick Start
+
+### Installation Methods (Friendly)
+- **Zero install** — MCP server is hosted; no local binary to build or run.
+- **Drop-in configs** — ready JSONs in `configs/` for Claude Desktop, Cursor, VS Code Copilot, and Cline; replace `YOUR_API_KEY_HERE` with your key.
+- **Health validation** — confirm connectivity anytime:
+
+```bash
+curl -s -H "X-API-Key: $ALEATORIC_API_KEY" https://mcp.aleatoric.systems/mcp/health
+```
 
 ### 1. Get an API Key
 
@@ -143,6 +153,10 @@ Ask your AI assistant:
 | `get_cache_stats` | Statistics about cached datasets |
 | `stream_cache` | Stream cached events via SSE |
 | `export_cache` | Export dataset as Parquet |
+
+### Prompts & Resources
+- **Prompts:** Example asks live in `README.md` (see Example Prompts) and can be reused directly in MCP-capable IDEs.
+- **Resources:** The server exposes MCP `resources` for cache inspection/export; attach outputs via `get_cache_stats`, `stream_cache`, or `export_cache` to feed downstream tools.
 
 ## Example Prompts
 
