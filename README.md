@@ -5,19 +5,24 @@
 # Aleatoric MCP Client
 
 [![MCP Version](https://img.shields.io/badge/MCP-1.0.0-blue)](https://modelcontextprotocol.io)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 [![GitHub last commit](https://img.shields.io/github/last-commit/aleatoric-systems/aleatoric-engine-mcp)](https://github.com/aleatoric-systems/aleatoric-engine-mcp)
 [![MCP Badge](https://lobehub.com/badge/mcp/aleatoric-systems-aleatoric-engine-mcp?style=for-the-badge)](https://lobehub.com/mcp/aleatoric-systems-aleatoric-engine-mcp)
 [![smithery badge](https://smithery.ai/badge/aleatoric/causal-mcp)](https://smithery.ai/server/aleatoric/causal-mcp)
-
+[![Status](https://img.shields.io/badge/Status-Production%20Ready-green)]()
+[![Compliance](https://img.shields.io/badge/MCP-Compliant-success)]()
 
 > Official MCP client SDK for [Aleatoric Systems](https://www.aleatoric.systems) — Institutional-grade synthetic market data generation.
+
+**Verified Compliance:** This client is fully compliant with Aleatoric Engine API v0.4.5 and MCP Protocol Version 2025-11-25. All examples are tested against live production endpoints.
 
 **Keywords:** `mcp` `market-data` `synthetic-data` `backtesting` `trading` `fintech` `quantitative-finance` `perpetuals` `futures` `order-book`
 
 ## Overview
 
 Aleatoric MCP provides AI assistants with tools to generate deterministic synthetic market data for backtesting, stress testing, and model validation. Connect your AI coding assistant to generate reproducible datasets across 6 major exchanges.
+
+See our [Roadmap](ROADMAP.md) for planned features and architectural updates.
 
 **Supported Exchanges:** Binance, HyperLiquid, OKX, Bybit, CME, SGX
 
@@ -76,6 +81,19 @@ Random data is useless for engineering. You need:
 # Public health check (No API Key required)
 curl -s https://mcp.aleatoric.systems/mcp/health
 ```
+
+### Local Bridge (Inspector & Claude Desktop)
+
+To use this with the official [MCP Inspector](https://modelcontextprotocol.io/docs/tools/inspector) or Claude Desktop via stdio:
+
+1.  Set your API key:
+    ```bash
+    export ALEATORIC_API_KEY="your-key"
+    ```
+2.  Run the bridge server:
+    ```bash
+    npx @modelcontextprotocol/inspector python server.py
+    ```
 
 ### Examples
 - See `examples/README.md` for the curated flow:
@@ -325,4 +343,7 @@ Start your free trial: [www.aleatoric.systems](https://www.aleatoric.systems)
 
 ## License
 
-MIT License - see [LICENSE](LICENSE)
+Apache License 2.0 - see [LICENSE](LICENSE)
+
+---
+© 2024-2026 Aleatoric Systems. All rights reserved.

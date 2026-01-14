@@ -1,5 +1,6 @@
 {
-    "mcpVersion": "1.4.0",
+    "$schema": "https://modelcontextprotocol.io/schema/server.json",
+    "mcpVersion": "2025-11-25",
     "server": {
         "name": "aleatoric-engine",
         "version": "0.4.5",
