@@ -28,9 +28,9 @@ Aleatoric MCP provides AI assistants with tools to generate deterministic synthe
 > "Generate a 1-hour dataset of BTC/USDT L2 order book updates on Binance. Use seed 123 for reproducibility. Plot the mid-price and spread over time."
 
 **What happens:**
-1.  **Agent calls** `validate_config` to lock parameters.
+1.  **Agent calls** `generate_dataset` to request the data.
 2.  **Server generates** 3,600s of data (approx 14,000 events) with realistic microstructure.
-3.  **Agent receives** a signed URL or stream of the data.
+3.  **Agent receives** a signed download URL.
 4.  **Agent plots** the exact price path defined by `seed=123`.
 
 *Result: A fully reproducible market scenario for your backtest in under 2 minutes.*
@@ -211,6 +211,7 @@ Ask your AI assistant:
 | Tool | Description |
 |------|-------------|
 | `validate_config` | Validate simulation configuration and get deterministic hash |
+| `generate_dataset` | Generate a batch of synthetic market data |
 | `get_presets` | List available market simulation profiles |
 | `normalize_events` | Normalize raw exchange data to canonical format |
 | `simulate_funding_regime` | Calculate venue-specific funding rates and perp prices |
@@ -297,7 +298,8 @@ Full API documentation: [www.aleatoric.systems](https://www.aleatoric.systems)
 | `/mcp/health` | GET | Health check |
 | `/mcp/presets` | GET | List presets |
 | `/mcp/config/validate` | POST | Validate config |
-| `/mcp/config/schema` | GET | Get config schema |
+| `/mcp/config/schema` | GET | Get JSON Schema for SimulationManifest |
+| `/data/generate` | POST | Generate batch data (Parquet) |
 | `/mcp/normalize` | POST | Normalize events |
 | `/mcp/simulate_funding_regime` | POST | Funding simulation |
 | `/mcp/venues/{exchange}` | GET | Venue details |

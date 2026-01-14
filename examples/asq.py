@@ -199,7 +199,7 @@ class ASQMaker:
 if __name__ == "__main__":
     config = StratConfig(gamma=0.5, conf_threshold_bps=10, max_inventory_units=50)
 
-    maker = AvellanedaMarketMaker("SOL-PERP", config)
+    maker = ASQMaker("SOL-PERP", config)
 
     print("--- SCENE: Long Inventory (+40 units) ---")
     # We are Long -> We want lower prices to sell.

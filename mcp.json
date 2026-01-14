@@ -1,8 +1,8 @@
 {
-    "mcpVersion": "1.0.0",
+    "mcpVersion": "1.4.0",
     "server": {
         "name": "aleatoric-engine",
-        "version": "0.4.4",
+        "version": "0.4.5",
         "description": "Institutional-grade synthetic market data generator and normalizer."
     },
     "keywords": [
@@ -60,6 +60,38 @@
                     },
                     "required": [
                         "config"
+                    ]
+                }
+            },
+            "generate_dataset": {
+                "description": "Generate a batch of synthetic market data.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "symbol": {
+                            "type": "string",
+                            "description": "Trading symbol (e.g. BTCUSDT)"
+                        },
+                        "duration_seconds": {
+                            "type": "integer",
+                            "default": 60,
+                            "description": "Duration in seconds (max 604800)"
+                        },
+                        "seed": {
+                            "type": "integer",
+                            "description": "Random seed for reproducibility"
+                        },
+                        "tick_size": {
+                            "type": "number",
+                            "default": 0.01
+                        },
+                        "lot_size": {
+                            "type": "number",
+                            "default": 0.001
+                        }
+                    },
+                    "required": [
+                        "symbol"
                     ]
                 }
             },
@@ -169,7 +201,9 @@
                             "description": "The cache key identifier"
                         }
                     },
-                    "required": ["cache_key"]
+                    "required": [
+                        "cache_key"
+                    ]
                 }
             },
             "delete_cache": {
@@ -182,7 +216,9 @@
                             "description": "The cache key to delete"
                         }
                     },
-                    "required": ["cache_key"]
+                    "required": [
+                        "cache_key"
+                    ]
                 }
             },
             "stream_cache": {
@@ -195,7 +231,9 @@
                             "description": "The cache key to stream"
                         }
                     },
-                    "required": ["cache_key"]
+                    "required": [
+                        "cache_key"
+                    ]
                 }
             },
             "export_cache": {
@@ -208,7 +246,9 @@
                             "description": "The cache key to export"
                         }
                     },
-                    "required": ["cache_key"]
+                    "required": [
+                        "cache_key"
+                    ]
                 }
             },
             "get_venue_details": {
@@ -218,10 +258,19 @@
                     "properties": {
                         "exchange": {
                             "type": "string",
-                            "enum": ["binance", "hyperliquid", "okx", "bybit", "cme", "sgx"]
+                            "enum": [
+                                "binance",
+                                "hyperliquid",
+                                "okx",
+                                "bybit",
+                                "cme",
+                                "sgx"
+                            ]
                         }
                     },
-                    "required": ["exchange"]
+                    "required": [
+                        "exchange"
+                    ]
                 }
             }
         },

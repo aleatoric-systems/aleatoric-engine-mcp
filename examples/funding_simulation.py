@@ -20,7 +20,7 @@ import sys
 import httpx
 
 BASE_URL = "https://mcp.aleatoric.systems"
-EXCHANGES = ["binance", "hyperliquid", "okx", "bybit", "cme", "sgx"]
+EXCHANGES = ["binance"]
 
 
 def main() -> int:
