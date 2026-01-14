@@ -9,7 +9,7 @@
 [![GitHub last commit](https://img.shields.io/github/last-commit/aleatoric-systems/aleatoric-engine-mcp)](https://github.com/aleatoric-systems/aleatoric-engine-mcp)
 [![MCP Badge](https://lobehub.com/badge/mcp/aleatoric-systems-aleatoric-engine-mcp?style=for-the-badge)](https://lobehub.com/mcp/aleatoric-systems-aleatoric-engine-mcp)
 [![smithery badge](https://smithery.ai/badge/aleatoric/causal-mcp)](https://smithery.ai/server/aleatoric/causal-mcp)
-[![smithery badge](https://smithery.ai/badge/aleatoric/causal-mcp)](https://smithery.ai/server/aleatoric/causal-mcp)
+
 
 > Official MCP client SDK for [Aleatoric Systems](https://www.aleatoric.systems) — Institutional-grade synthetic market data generation.
 
