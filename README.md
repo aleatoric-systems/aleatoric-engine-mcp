@@ -8,6 +8,8 @@
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![GitHub last commit](https://img.shields.io/github/last-commit/aleatoric-systems/aleatoric-engine-mcp)](https://github.com/aleatoric-systems/aleatoric-engine-mcp)
 [![MCP Badge](https://lobehub.com/badge/mcp/aleatoric-systems-aleatoric-engine-mcp?style=for-the-badge)](https://lobehub.com/mcp/aleatoric-systems-aleatoric-engine-mcp)
+[![smithery badge](https://smithery.ai/badge/aleatoric/causal-mcp)](https://smithery.ai/server/aleatoric/causal-mcp)
+[![smithery badge](https://smithery.ai/badge/aleatoric/causal-mcp)](https://smithery.ai/server/aleatoric/causal-mcp)
 
 > Official MCP client SDK for [Aleatoric Systems](https://www.aleatoric.systems) — Institutional-grade synthetic market data generation.
 
@@ -32,6 +34,19 @@ Aleatoric MCP provides AI assistants with tools to generate deterministic synthe
 4.  **Agent plots** the exact price path defined by `seed=123`.
 
 *Result: A fully reproducible market scenario for your backtest in under 2 minutes.*
+
+### Public Validation Showcase
+
+Run a deterministic hash check and optional Parquet export against the hosted MCP without any local server:
+
+```bash
+cd public/aleatoric-engine-mcp
+pip install -r examples/requirements.txt
+export ALEATORIC_API_KEY="your-api-key"
+python examples/validation_showcase.py --symbol BTC --seed 42 --duration 60
+```
+
+If you have a cache key, add `--cache-key <key>` to download a Parquet artifact.
 
 ## Use Cases
 
@@ -61,6 +76,13 @@ Random data is useless for engineering. You need:
 # Public health check (No API Key required)
 curl -s https://mcp.aleatoric.systems/mcp/health
 ```
+
+### Examples
+- See `examples/README.md` for the curated flow:
+  - List presets: `python examples/list_presets.py --manifest`
+  - Validate config (hash): `python examples/validate_config.py --symbol BTC --seed 42`
+  - Funding simulation: `python examples/funding_simulation.py --exchange binance`
+  - Validation showcase (hash + optional export): `python examples/validation_showcase.py --symbol BTC --seed 42 --duration 60`
 
 ### 1. Get an API Key
 
@@ -197,6 +219,7 @@ Ask your AI assistant:
 | `get_cache_stats` | Statistics about cached datasets |
 | `stream_cache` | Stream cached events via SSE |
 | `export_cache` | Export dataset as Parquet |
+| `examples/validation_showcase.py` | Public demo: health/presets, deterministic hash check, optional cache export |
 
 ### Prompts & Resources
 - **Prompts:** Example asks live in `README.md` (see Example Prompts) and can be reused directly in MCP-capable IDEs.
@@ -206,7 +229,7 @@ Ask your AI assistant:
 - **Health:** `curl -s -H "X-API-Key: $ALEATORIC_API_KEY" https://mcp.aleatoric.systems/mcp/health` → expect `{ "status": "healthy", "version": "0.4.3" }`.
 - **Manifest:** `python examples/list_presets.py --manifest` → prints server name/version and tool list.
 - **Tool Call:** `python examples/validate_config.py --symbol BTC --seed 42` → expect `Valid! Hash: ...` with normalized config.
-- **Resource Flow:** `python examples/funding_simulation.py --exchange hyperliquid` → exercises tool + resource outputs; for cache endpoints, call `get_cache_stats` then `stream_cache`/`export_cache` (attach resource in your MCP client).
+- **Resource Flow:** `python examples/funding_simulation.py --exchange hyperliquid` → exercises tool + resource outputs; for cache endpoints, call `get_cache_stats` then `stream_cache`/`export_cache` (attach resource in your MCP client). For a quick public validation demo, run `python examples/validation_showcase.py --symbol BTC --seed 42 --duration 60` to confirm deterministic hashes and optionally export a cached Parquet.
 - **Offline sanity (no network):** `python -m compileall examples` after installing deps to ensure scripts parse.
 
 ## Example Prompts

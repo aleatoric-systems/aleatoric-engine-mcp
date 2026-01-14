@@ -1,5 +1,11 @@
 from __future__ import annotations
 
+"""
+Local ASQ simulation (non-MCP) for demonstrating Avellaneda-Stoikov behavior.
+Use the MCP-driven notebooks/scripts for real data; this script is a seeded,
+reproducible toy model only.
+"""
+
 import argparse
 import os
 import sys
@@ -25,6 +31,11 @@ K_LIQUIDITY = 1.5  # Order book liquidity parameter (Fill probability decay)
 # Oracle Parameters (Pyth)
 CONF_THRESHOLD = 0.0015  # 15 bps (If Conf/Price > 0.15%, assume toxic flow)
 CONF_MULTIPLIER = 5.0  # How much to widen spreads during high uncertainty
+
+def set_seed(seed: int) -> None:
+    """Deterministic seed for reproducible comparisons."""
+    np.random.seed(seed)
+set_seed(42)
 
 
 class MarketSimulator:

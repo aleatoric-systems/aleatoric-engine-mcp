@@ -1,0 +1,36 @@
+LLM Guide for Aleatoric Engine MCP (public)
+
+Purpose
+- Help assistants safely explore this repo, answer setup questions, and showcase Aleatoric’s deterministic synthetic market data via the public MCP endpoint.
+
+Repo Index
+- README.md: overview, tools, endpoints, pricing.
+- llms-install.md: IDE/client setup examples.
+- mcp.json: MCP manifest (tools/resources: validate_config, get_presets, normalize_events, simulate_funding_regime, cache export/stream).
+- examples/: ready scripts (list_presets.py, validate_config.py, funding_simulation.py, asq.py) + validation_showcase.py for public demo.
+- configs/: drop-in MCP client configs (Claude, Cursor, VS Code Copilot, Cline).
+- AGENTS.md: repo guidance and coding standards.
+
+Safety & Boundaries
+- Never request or store user secrets; API key must be provided by the user via env/header, not pasted into code snippets.
+- Keep prompts and outputs lightweight; do not commit artifacts or large datasets.
+- Reference only information in this repo; avoid inventing pricing/features.
+
+Quick Public Demo Flow
+1) Set key: export ALEATORIC_API_KEY="your-api-key".
+2) Health/presets: python examples/list_presets.py --manifest
+3) Deterministic hash: python examples/validate_config.py --symbol BTC --seed 42
+4) Validation showcase (hash check + optional Parquet export): python examples/validation_showcase.py --symbol BTC --seed 42 --duration 60 [--cache-key <key>]
+
+Key Endpoints (hosted)
+- Base: https://mcp.aleatoric.systems
+- /mcp/health, /mcp/manifest, /mcp/presets
+- /mcp/config/validate, /mcp/config/schema
+- /mcp/normalize, /mcp/simulate_funding_regime, /mcp/venues/{exchange}
+- /mcp/caches/stats, /mcp/caches/stream/{key}, /mcp/caches/export/{key}
+
+Assistant Reminders
+- Offer concise, reproducible commands; keep seeds/configs explicit for determinism.
+- Suggest examples/validation_showcase.py for fast “show it off” demos.
+- If asked about account/billing, provide support path only (no account access): support@aleatoric.systems.
+- If unsure, say so and point to the relevant file above.
