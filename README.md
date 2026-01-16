@@ -305,11 +305,78 @@ with httpx.Client(timeout=30) as client:
 
 See [examples/](examples/) for more complete examples.
 
+## MCP JSON-RPC 2.0 Protocol
+
+The recommended way to interact with Aleatoric. Standard MCP protocol at `POST /mcp`.
+
+### Protocol Details
+
+- **Version**: `2024-11-05`
+- **Transport**: HTTP POST with JSON-RPC 2.0
+- **Authentication**: `X-API-Key` header
+
+### Methods
+
+| Method | Description |
+|--------|-------------|
+| `initialize` | Handshake — returns protocol version, server info, capabilities |
+| `tools/list` | List all tools with full JSON Schema `inputSchema` |
+| `tools/call` | Execute a tool by name with arguments |
+| `ping` | Connection health check |
+
+### Example: tools/call
+
+```bash
+curl -X POST https://mcp.aleatoric.systems/mcp \
+  -H "X-API-Key: $ALEATORIC_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "tools/call",
+    "params": {
+      "name": "validate_config",
+      "arguments": {
+        "config": {"symbol": "BTC", "seed": 42}
+      }
+    }
+  }'
+```
+
+### Response Format
+
+All tool results follow MCP content format:
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": {
+    "content": [{"type": "text", "text": "{\"valid\": true, \"hash\": \"sha256:...\"}"}],
+    "isError": false
+  },
+  "error": null
+}
+```
+
 ## API Reference
 
 Full API documentation: [www.aleatoric.systems](https://www.aleatoric.systems)
 
-### Endpoints
+### Primary Endpoint (MCP JSON-RPC)
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/mcp` | POST | MCP JSON-RPC 2.0 protocol endpoint |
+
+### Discovery Endpoints (Public, No Auth)
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/mcp/tools/list` | GET | Tool discovery with schemas |
+| `/.well-known/mcp.json` | GET | MCP Server Card for registries |
+| `/.well-known/mcp-config` | GET | Session configuration schema |
+
+### Legacy HTTP Endpoints
 
 | Endpoint | Method | Description |
 |----------|--------|-------------|
