@@ -14,7 +14,7 @@
 
 > Official MCP client SDK for [Aleatoric Systems](https://www.aleatoric.systems) — Institutional-grade synthetic market data generation.
 
-**Verified Compliance:** This client is fully compliant with Aleatoric Engine API v0.4.5 and MCP Protocol Version 2025-11-25. All examples are tested against live production endpoints.
+**Verified Compliance:** This client is fully compliant with Aleatoric Engine API v0.4.7 and MCP Protocol Version 2024-11-05 (JSON-RPC 2.0). All examples are tested against live production endpoints.
 
 **Keywords:** `mcp` `market-data` `synthetic-data` `backtesting` `trading` `fintech` `quantitative-finance` `perpetuals` `futures` `order-book`
 
@@ -215,7 +215,7 @@ curl -s https://mcp.aleatoric.systems/mcp/health
 
 **Expected output:**
 ```json
-{"status": "ok", "version": "0.4.4"}
+{"status": "ok", "version": "0.4.7", "timestamp": "2026-01-15T..."}
 ```
 
 ### 4. Start Using
@@ -228,6 +228,7 @@ Ask your AI assistant:
 
 | Tool | Description |
 |------|-------------|
+| `get_health` | Lightweight health check returning server status and timestamp |
 | `validate_config` | Validate simulation configuration and get deterministic hash |
 | `generate_dataset` | Generate a batch of synthetic market data |
 | `get_presets` | List available market simulation profiles |
@@ -245,7 +246,7 @@ Ask your AI assistant:
 - **Resources:** The server exposes MCP `resources` for cache inspection/export; attach outputs via `get_cache_stats`, `stream_cache`, or `export_cache` to feed downstream tools.
 
 ## Validation Checklist (End-to-End)
-- **Health:** `curl -s -H "X-API-Key: $ALEATORIC_API_KEY" https://mcp.aleatoric.systems/mcp/health` → expect `{ "status": "healthy", "version": "0.4.3" }`.
+- **Health:** `curl -s -H "X-API-Key: $ALEATORIC_API_KEY" https://mcp.aleatoric.systems/mcp/health` → expect `{ "status": "ok", "version": "0.4.7", "timestamp": "..." }`.
 - **Manifest:** `python examples/list_presets.py --manifest` → prints server name/version and tool list.
 - **Tool Call:** `python examples/validate_config.py --symbol BTC --seed 42` → expect `Valid! Hash: ...` with normalized config.
 - **Resource Flow:** `python examples/funding_simulation.py --exchange hyperliquid` → exercises tool + resource outputs; for cache endpoints, call `get_cache_stats` then `stream_cache`/`export_cache` (attach resource in your MCP client). For a quick public validation demo, run `python examples/validation_showcase.py --symbol BTC --seed 42 --duration 60` to confirm deterministic hashes and optionally export a cached Parquet.

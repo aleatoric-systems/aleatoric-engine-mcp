@@ -2,10 +2,13 @@
 """
 Aleatoric MCP Bridge Server (Stdio)
 
-This script acts as a local MCP server that proxies requests to the 
-remote Aleatoric Production API. It enables compatibility with 
-clients that require a local stdio transport (like MCP Inspector 
-or Claude Desktop running locally).
+This script acts as a local MCP server that proxies requests to the
+remote Aleatoric Production API via the standard MCP JSON-RPC 2.0 protocol.
+It enables compatibility with clients that require a local stdio transport
+(like MCP Inspector or Claude Desktop running locally).
+
+Protocol Version: 2024-11-05
+Server Version: 0.4.7
 """
 
 import json
@@ -21,140 +24,120 @@ if not API_KEY:
     sys.stderr.write("Error: ALEATORIC_API_KEY must be set.\n")
     sys.exit(1)
 
+MCP_PROTOCOL_VERSION = "2024-11-05"
+SERVER_NAME = "aleatoric-bridge"
+SERVER_VERSION = "0.4.7"
+
+
 def log(msg):
     sys.stderr.write(f"[Aleatoric Bridge] {msg}\n")
     sys.stderr.flush()
 
+
+def proxy_to_remote(req):
+    """
+    Proxy a JSON-RPC request to the remote Aleatoric MCP endpoint.
+    The remote server implements the standard MCP JSON-RPC 2.0 protocol.
+    """
+    try:
+        with httpx.Client(timeout=120.0) as client:
+            resp = client.post(
+                f"{API_BASE_URL}/mcp",
+                headers={
+                    "X-API-Key": API_KEY,
+                    "Content-Type": "application/json",
+                },
+                json=req
+            )
+            resp.raise_for_status()
+            return resp.json()
+    except httpx.HTTPStatusError as e:
+        log(f"HTTP error from remote: {e.response.status_code} - {e.response.text}")
+        return {
+            "jsonrpc": "2.0",
+            "id": req.get("id"),
+            "error": {
+                "code": -32603,
+                "message": f"Remote server error: {e.response.status_code}"
+            }
+        }
+    except Exception as e:
+        log(f"Failed to proxy request: {e}")
+        return {
+            "jsonrpc": "2.0",
+            "id": req.get("id"),
+            "error": {"code": -32603, "message": str(e)}
+        }
+
+
 def handle_request(req):
+    """
+    Handle an incoming JSON-RPC request.
+
+    Local handling for initialize (to return bridge info).
+    All other requests are proxied to the remote MCP endpoint.
+    """
     method = req.get("method")
     params = req.get("params", {})
     msg_id = req.get("id")
 
+    # Handle initialize locally to identify as a bridge
     if method == "initialize":
         return {
             "jsonrpc": "2.0",
             "id": msg_id,
             "result": {
-                "protocolVersion": "2025-11-25",
+                "protocolVersion": MCP_PROTOCOL_VERSION,
                 "capabilities": {
-                    "tools": {},
-                    "resources": {}
+                    "tools": {}
                 },
                 "serverInfo": {
-                    "name": "aleatoric-bridge",
-                    "version": "0.1.0"
+                    "name": SERVER_NAME,
+                    "version": SERVER_VERSION
                 }
             }
         }
-    
+
+    # Notifications don't need a response
     if method == "notifications/initialized":
         return None
 
-    if method == "tools/list":
-        # Fetch manifest from remote
-        try:
-            with httpx.Client(timeout=5.0) as client:
-                resp = client.get(f"{API_BASE_URL}/.well-known/mcp.json")
-                resp.raise_for_status()
-                manifest = resp.json()
-                
-                # Transform to MCP structure
-                tools = []
-                for t in manifest.get("tools", []):
-                    # Schema needs to be fetched or mocked if not in manifest
-                    # The simple manifest lacks inputSchema. 
-                    # We'll fetch full schema from /mcp/config/schema for validate
-                    input_schema = {
-                        "type": "object", 
-                        "properties": {},
-                        "required": []
-                    }
-                    
-                    if t["name"] == "generate_dataset":
-                         input_schema = {
-                            "type": "object",
-                            "properties": {
-                                "symbol": {"type": "string"},
-                                "duration_seconds": {"type": "integer"},
-                                "seed": {"type": "integer"}
-                            },
-                            "required": ["symbol"]
-                        }
-                    
-                    tools.append({
-                        "name": t["name"],
-                        "description": t["description"],
-                        "inputSchema": input_schema
-                    })
-                
-                return {
-                    "jsonrpc": "2.0",
-                    "id": msg_id,
-                    "result": {
-                        "tools": tools
-                    }
-                }
-        except Exception as e:
-            log(f"Failed to fetch tools: {e}")
-            return {"jsonrpc": "2.0", "id": msg_id, "error": {"code": -32603, "message": str(e)}}
+    # All other methods are proxied to the remote server
+    # This includes: ping, tools/list, tools/call
+    return proxy_to_remote(req)
 
-    if method == "tools/call":
-        name = params.get("name")
-        args = params.get("arguments", {})
-        
-        if name == "generate_dataset":
-            # Proxy to /data/generate
-            try:
-                payload = {
-                    "config": {
-                        "symbol": args.get("symbol"),
-                        "seed": args.get("seed"),
-                    },
-                    "duration_seconds": int(args.get("duration_seconds", 60))
-                }
-                
-                with httpx.Client(timeout=60.0) as client:
-                    resp = client.post(
-                        f"{API_BASE_URL}/data/generate",
-                        headers={"X-API-Key": API_KEY},
-                        json=payload
-                    )
-                    resp.raise_for_status()
-                    data = resp.json()
-                    
-                    return {
-                        "jsonrpc": "2.0",
-                        "id": msg_id,
-                        "result": {
-                            "content": [{
-                                "type": "text",
-                                "text": json.dumps(data, indent=2)
-                            }]
-                        }
-                    }
-            except Exception as e:
-                 return {"jsonrpc": "2.0", "id": msg_id, "error": {"code": -32603, "message": str(e)}}
-
-    return {"jsonrpc": "2.0", "id": msg_id, "error": {"code": -32601, "message": "Method not found"}}
 
 def main():
-    log("Starting stdio server...")
+    log(f"Starting stdio bridge server v{SERVER_VERSION}...")
+    log(f"Remote endpoint: {API_BASE_URL}/mcp")
+    log(f"Protocol version: {MCP_PROTOCOL_VERSION}")
+
     while True:
         try:
             line = sys.stdin.readline()
             if not line:
                 break
-            
+
             req = json.loads(line)
             resp = handle_request(req)
-            
+
             if resp:
                 sys.stdout.write(json.dumps(resp) + "\n")
                 sys.stdout.flush()
-                
+
+        except json.JSONDecodeError as e:
+            log(f"Invalid JSON: {e}")
+            error_resp = {
+                "jsonrpc": "2.0",
+                "id": None,
+                "error": {"code": -32700, "message": "Parse error"}
+            }
+            sys.stdout.write(json.dumps(error_resp) + "\n")
+            sys.stdout.flush()
         except Exception as e:
             log(f"Loop error: {e}")
             break
+
 
 if __name__ == "__main__":
     main()

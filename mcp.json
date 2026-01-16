@@ -1,9 +1,9 @@
 {
     "$schema": "https://modelcontextprotocol.io/schema/server.json",
-    "mcpVersion": "2025-11-25",
+    "mcpVersion": "2024-11-05",
     "server": {
         "name": "aleatoric-engine",
-        "version": "0.4.5",
+        "version": "0.4.7",
         "description": "Institutional-grade synthetic market data generator and normalizer."
     },
     "keywords": [
@@ -49,6 +49,14 @@
             }
         },
         "tools": {
+            "get_health": {
+                "description": "Lightweight health check returning server status and timestamp.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {},
+                    "required": []
+                }
+            },
             "validate_config": {
                 "description": "Validate a synthetic market configuration JSON object.",
                 "inputSchema": {
