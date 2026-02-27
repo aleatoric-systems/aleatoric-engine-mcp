@@ -3,7 +3,7 @@
     "mcpVersion": "2024-11-05",
     "server": {
         "name": "aleatoric-engine",
-        "version": "0.4.7",
+        "version": "0.4.9",
         "description": "Institutional-grade synthetic market data generator and normalizer."
     },
     "keywords": [
@@ -20,8 +20,8 @@
     ],
     "capabilities": {
         "prompts": {
-            "generate_synthetic_data": {
-                "name": "generate_synthetic_data",
+            "generate_backtest_data": {
+                "name": "generate_backtest_data",
                 "description": "Generate synthetic market data with specific parameters",
                 "arguments": [
                     {
@@ -36,8 +36,8 @@
                     }
                 ]
             },
-            "simulate_funding": {
-                "name": "simulate_funding",
+            "analyze_funding_costs": {
+                "name": "analyze_funding_costs",
                 "description": "Simulate funding rates for a specific exchange",
                 "arguments": [
                     {
@@ -73,7 +73,7 @@
                 }
             },
             "generate_dataset": {
-                "description": "Generate a batch of synthetic market data.",
+                "description": "Generate synthetic L2 book and trade events. Each payload includes mark (FDR clean perp price), index (FDR clean spot price), funding_rate_bps (per-tick OU, not static 8h), and source_type (depth/trade).",
                 "inputSchema": {
                     "type": "object",
                     "properties": {
@@ -83,8 +83,8 @@
                         },
                         "duration_seconds": {
                             "type": "integer",
-                            "default": 60,
-                            "description": "Duration in seconds (max 604800)"
+                            "default": 3600,
+                            "description": "Duration in seconds (max 604800). Set >= backtest window to avoid price-path periodicity."
                         },
                         "seed": {
                             "type": "integer",
@@ -108,7 +108,8 @@
                 "description": "List available market simulation profiles.",
                 "inputSchema": {
                     "type": "object",
-                    "properties": {}
+                    "properties": {},
+                    "required": []
                 }
             },
             "normalize_events": {
@@ -129,13 +130,12 @@
                         "events": {
                             "type": "array",
                             "items": {
-                                "type": "object",
-                                "properties": {
-                                    "payload": {
-                                        "type": "object"
-                                    }
-                                }
+                                "type": "object"
                             }
+                        },
+                        "symbol": {
+                            "type": "string",
+                            "description": "Optional symbol filter"
                         },
                         "stream": {
                             "type": "boolean",
@@ -190,14 +190,16 @@
                 "description": "Get statistics about the local artifact cache.",
                 "inputSchema": {
                     "type": "object",
-                    "properties": {}
+                    "properties": {},
+                    "required": []
                 }
             },
             "get_config_schema": {
                 "description": "Get the JSON Schema for SimulationManifest configuration.",
                 "inputSchema": {
                     "type": "object",
-                    "properties": {}
+                    "properties": {},
+                    "required": []
                 }
             },
             "get_cache_manifest": {
@@ -288,9 +290,13 @@
                 "uri": "aleatoric://presets",
                 "description": "List of all registered simulation presets"
             },
-            "manifest": {
-                "uri": "aleatoric://manifest",
-                "description": "Server capabilities and version info"
+            "cache_stats": {
+                "uri": "aleatoric://cache/stats",
+                "description": "Statistics about cached datasets"
+            },
+            "config_schema": {
+                "uri": "aleatoric://schema/config",
+                "description": "JSON Schema for simulation configuration"
             }
         }
     }
