@@ -3,7 +3,7 @@
     "mcpVersion": "2024-11-05",
     "server": {
         "name": "aleatoric-engine",
-        "version": "0.5.0",
+        "version": "0.5.2",
         "description": "Institutional-grade synthetic market data generator and normalizer."
     },
     "keywords": [
@@ -73,7 +73,7 @@
                 }
             },
             "generate_dataset": {
-                "description": "Generate synthetic L2 book and trade events. Each payload includes mark (FDR clean perp price), index (FDR clean spot price), funding_rate_bps (per-tick OU, not static 8h), and source_type (depth/trade).",
+                "description": "Generate synthetic L2 book and trade events. Each payload includes mark (FDR clean perp price), index (FDR clean spot price), funding_rate_bps (per-tick OU, not static 8h), source_type (depth/trade), and src_latency_ms (simulated source latency in ms). For real-time composite spot+perp streaming, use GET /stream/live with mode=composite_pair.",
                 "inputSchema": {
                     "type": "object",
                     "properties": {
@@ -149,7 +149,7 @@
                 }
             },
             "simulate_funding_regime": {
-                "description": "Calculate venue-specific funding rates, perp prices, and settlement logic.",
+                "description": "Calculate venue-specific funding rates, perp prices, and settlement logic. Returns scalar funding fields plus a `periods` array (one element per settlement interval) containing `period_index`, `start_ts_ms`, `next_funding_time`, `funding_rate`, `funding_rate_bps`, and `premium_bps`. The `num_periods` parameter controls how many forward periods to generate (default 1, max ~12 for a 4-day window). The `seed` parameter makes multi-period generation deterministic.",
                 "inputSchema": {
                     "type": "object",
                     "properties": {
@@ -176,7 +176,12 @@
                         },
                         "num_periods": {
                             "type": "integer",
-                            "default": 10
+                            "default": 1,
+                            "description": "Number of forward funding periods to generate. Default 1 (current period only). Max ~12 (~4-day window for 8h venues)."
+                        },
+                        "seed": {
+                            "type": "integer",
+                            "description": "Random seed for deterministic multi-period generation. When omitted, uses a fixed internal default."
                         }
                     },
                     "required": [
