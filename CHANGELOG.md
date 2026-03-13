@@ -6,6 +6,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [0.5.6] - 2026-03-13
+
+### Changed
+- **Version alignment** — SDK package, mcp.json, and README version references updated from 0.5.2 to 0.5.6 to match engine release
+- **README compliance badge** — Updated from v0.4.7 to v0.5.6; health check examples updated
+
+### Added
+- **Alpha proxy endpoints** — Engine now proxies `/api/v1/unified/consensus-pulse` for dashboard clients
+- **Session auth for alpha tokens** — Engine recognizes `alpha_*` token prefix alongside `sess_*` for session validation
+- **Service catalog** — Typed commercial service catalog with plan definitions and Stripe price resolution
+- **Service entitlements** — Entitlement management with upsert, list, legacy derivation, and dashboard expansion
+- **Control plane API** — `/v1/control-plane/catalog`, `/v1/control-plane/dashboard-state`, `/v1/control-plane/inventory/sources`, `/v1/control-plane/summary` endpoints
+- **Billing audit trail** — Non-fatal Cosmos writes for billing lifecycle events
+- **Usage threshold alerts** — `/v1/usage/current` returns alerts array with 70%/90%/100% threshold warnings
+
 ## [0.5.2] - 2026-03-01
 
 ### Added
