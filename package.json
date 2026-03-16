@@ -1,6 +1,6 @@
 {
   "name": "aleatoric-engine-mcp",
-  "version": "0.5.6",
+  "version": "0.5.7",
   "description": "Institutional-grade synthetic market data generator and normalizer for MCP-compliant AI assistants.",
   "keywords": [
     "mcp",
