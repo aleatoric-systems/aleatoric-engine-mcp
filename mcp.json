@@ -3,7 +3,7 @@
     "mcpVersion": "2024-11-05",
     "server": {
         "name": "aleatoric-engine",
-        "version": "0.5.8",
+        "version": "0.5.9",
         "description": "Institutional-grade synthetic market data generator and normalizer."
     },
     "keywords": [
