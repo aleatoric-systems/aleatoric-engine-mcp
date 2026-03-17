@@ -6,6 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [0.5.10] - 2026-03-17
+
+### Changed
+- **Version alignment** — SDK package, mcp.json, and README version references updated from 0.5.9 to 0.5.10 to match engine release
+- **README compliance badge** — Updated from v0.5.8 to v0.5.10
+
+### Engine Highlights (v0.5.9 + v0.5.10)
+- **Service Bus connectivity** (0.5.9) — Queue health check now passes; connection string wired via Terraform
+- **Production hardening** (0.5.10) — 20/25 hardening gaps resolved: session cache eviction, graceful SSE shutdown, client-side error telemetry, circuit breaker sync, external availability monitoring, sustained degraded alerts, token refresh retry, localStorage quota handling
+
+---
+
 ## [0.5.6] - 2026-03-13
 
 ### Changed
