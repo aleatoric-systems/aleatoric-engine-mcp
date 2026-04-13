@@ -4,18 +4,21 @@ This guide provides step-by-step instructions for AI assistants (like Cline) to 
 
 ## Prerequisites
 
-- An Aleatoric API key (get one at https://www.aleatoric.systems)
+- An Aleatoric API key (create your account at https://data.aleatoric.systems/get-started)
 - No local installation required — this is a remote HTTP MCP server
 
 ## Installation Steps
 
 ### Step 1: Obtain API Key
 
-1. Go to https://www.aleatoric.systems
-2. Sign up for an account (14-day free trial available)
-3. Navigate to Settings → API Keys
+1. Go to https://data.aleatoric.systems/get-started
+2. Register for an account
+3. Open the console and navigate to API Keys
 4. Create a new API key with `mcp` scope
 5. Copy the key (it will only be shown once)
+
+The same account and API key also work on `sim.aleatoric.systems` and the hosted
+MCP endpoint at `mcp.aleatoric.systems`.
 
 ### Step 2: Configure Cline
 
@@ -78,6 +81,6 @@ After installation, try:
 
 ## Support
 
-- Documentation: https://www.aleatoric.systems
+- Documentation: https://data.aleatoric.systems/getting-started/quickstart
 - Issues: https://github.com/aleatoric-systems/aleatoric-engine-mcp/issues
 - Email: support@aleatoric.systems

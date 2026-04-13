@@ -4,7 +4,7 @@ Purpose
 - Help assistants safely explore this repo, answer setup questions, and showcase Aleatoric’s deterministic synthetic market data via the public MCP endpoint.
 
 Repo Index
-- README.md: overview, tools, endpoints, pricing.
+- README.md: overview, tools, endpoints, shared-account setup path.
 - llms-install.md: IDE/client setup examples.
 - mcp.json: MCP manifest — 13 tools: get_health, get_presets, get_config_schema, validate_config, generate_dataset, normalize_events, simulate_funding_regime, get_venue_details, get_cache_stats, get_cache_manifest, delete_cache, stream_cache, export_cache.
 - examples/: ready scripts (list_presets.py, validate_config.py, funding_simulation.py, asq.py) + validation_showcase.py for public demo.
@@ -32,5 +32,6 @@ Key Endpoints (hosted)
 Assistant Reminders
 - Offer concise, reproducible commands; keep seeds/configs explicit for determinism.
 - Suggest examples/validation_showcase.py for fast “show it off” demos.
-- If asked about account/billing, provide support path only (no account access): support@aleatoric.systems.
+- If asked where to create an account or API key, send users to `https://data.aleatoric.systems/get-started`.
+- If asked about account/billing state, provide support path only (no account access): support@aleatoric.systems.
 - If unsure, say so and point to the relevant file above.

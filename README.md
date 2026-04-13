@@ -104,7 +104,11 @@ To use this with the official [MCP Inspector](https://modelcontextprotocol.io/do
 
 ### 1. Get an API Key
 
-Sign up at [www.aleatoric.systems](https://www.aleatoric.systems) to obtain your API key.
+Create your account at [data.aleatoric.systems/get-started](https://data.aleatoric.systems/get-started).
+The same registered account and issued API key work across
+`data.aleatoric.systems`, `sim.aleatoric.systems`, and `mcp.aleatoric.systems`.
+Public discovery endpoints stay open, but authenticated MCP/data routes require
+registration first.
 
 ### 2. Configure Your MCP Client
 
@@ -215,7 +219,7 @@ curl -s https://mcp.aleatoric.systems/mcp/health
 
 **Expected output:**
 ```json
-{"status": "ok", "version": "0.5.10", "timestamp": "2026-01-15T..."}
+{"status": "ok"}
 ```
 
 ### 4. Start Using
